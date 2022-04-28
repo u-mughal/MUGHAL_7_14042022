@@ -1,14 +1,17 @@
-// Importations
-const express = require("express");
+import express from "express";
+import { getUser, getUsers, Register, Login, Logout, updateUser, uploadImage, deleteUser } from "../controllers/Users.js";
+import { verifyToken } from "../middleware/VerifyToken.js";
+import { refreshToken } from "../controllers/RefreshToken.js";
+
 const router = express.Router();
-const userCtrl = require("../controllers/user");
-const authController = require('../controllers/auth.controller');
 
-// Les routes
-router.post("/signup", userCtrl.signup);
-router.post("/login", userCtrl.login);
-router.post("/register", authController.signUp);
+router.post('/', Register);
+router.post('/login', Login);
+router.get('/id/:id', verifyToken, getUser);
+router.get('/', verifyToken, getUsers);
+router.get('/token', refreshToken);
+router.put('/:id', uploadImage, updateUser);
+router.delete('/logout', Logout);
+router.delete('/:id', verifyToken, deleteUser);
 
-
-
-module.exports = router;
+export default router;

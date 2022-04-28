@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './App';
+import "bulma/css/bulma.css";
+import axios from "axios";
 
+axios.defaults.withCredentials = true;
 
 ReactDOM.render(
-  <h1>
-    HELLO REACT
-  </h1>,
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById('root')
 );

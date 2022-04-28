@@ -1,20 +1,12 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import jwt from "jsonwebtoken";
 
-
-module.exports = (req,res,next) => {
-    try{
-        const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, process.env.TOKEN);
-        const userId = decodedToken.userId;
-        req.auth = {userId};
-        if (req.body.userId && req.body.userId !== userId) {
-            throw 'UserId non valide!';
-        } else {
-            console.log('UserId valide!');
-            next();
-        }
-    } catch {
-        res.status(401).json({error: 'Requête invalide, non autorisé !'});
-    }
-};
+export const verifyToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) return res.sendStatus(401);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) return res.sendStatus(403);
+        req.email = decoded.email;
+        next();
+    })
+}

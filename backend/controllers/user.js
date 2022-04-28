@@ -2,6 +2,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config({ encoding: "latin1" });
+import multer from "multer";
+
 
 /* Controleur inscription */
 exports.signup = (req, res, next) => {
@@ -49,3 +51,28 @@ exports.login = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '../frontend/public/images/profilepictures')
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.nom + '-' + req.body.prenom + '_' + Date.now() + path.extname(file.originalname))
+  }
+})
+
+export const uploadImage = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 },
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png|gif/
+    const mimeType = fileTypes.test(file.mimetype)
+    const extname = fileTypes.test(path.extname(file.originalname))
+
+    if (mimeType && extname) {
+      return cb(null, true)
+    }
+    cb('Give proper files formate to upload')
+  }
+}).single('userImg')
