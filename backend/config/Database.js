@@ -1,8 +1,9 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize('groupomania_db', 'root', 'root', {
+const db = new Sequelize('groupomania_db', 'root', '', {
     host: "localhost",
-    dialect: "mysql"
+    dialect: "mysql",
+    logging: false
 });
 
 (async () => { await db.sync(); })();
