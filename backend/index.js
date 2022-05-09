@@ -18,6 +18,7 @@ app.use("/comments", comRouter);
 
 app.use(express.static('public'));
 
+
 app.listen(5000, () => {
     console.log('Server running at port 5000');
 });
