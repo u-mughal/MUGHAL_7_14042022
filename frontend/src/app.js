@@ -42,7 +42,7 @@ const App = () => {
             <Router>
                 <Routes>
                     <Route path="/*" element={<Logout />}>
-                        {/* <Route path="login" element={<Login />} /> */}
+                        <Route path="login" element={<Login />} />
                         <Route path="register" element={<Register />} />
                         <Route path="*" element={<Navigate to="/Login" replace />} />
                     </Route>
