@@ -8,7 +8,7 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import Post from "./components/Post";
-import { BrowserRouter as Router, Routes, Route, Outlet, Navigate, } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom"; //, useParams
 
 function Logout() {
     return (
@@ -42,15 +42,15 @@ const App = () => {
             <Router>
                 <Routes>
                     <Route path="/*" element={<Logout />}>
-                        <Route path="login" element={<Login />} />
+                        {/* <Route path="login" element={<Login />} /> */}
                         <Route path="register" element={<Register />} />
                         <Route path="*" element={<Navigate to="/Login" replace />} />
                     </Route>
                     <Route path="/*" element={<Connected />}>
-                        <Route path="home" element={<Home />} />
+                        {/* <Route path="home" element={<Home />} />
                         <Route path="profile/:id" element={<Profile />} />
                         <Route path="post/:id" element={<Post />} />
-                        <Route path="settings" element={<Settings />} />
+                        <Route path="settings" element={<Settings />} /> */}
                     </Route>
                 </Routes>
             </Router>
