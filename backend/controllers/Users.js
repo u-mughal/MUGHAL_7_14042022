@@ -7,7 +7,6 @@ import path from "path";
 import fse from "fs-extra";
 
 
-
 export const getUser = async (req, res) => {
   try {
     const user = await Users.findByPk(req.params.id, {
@@ -86,7 +85,6 @@ export const Login = async (req, res) => {
     res.status(404).json({ msg: "L'adresse email n'existe pas" });
   }
 }
-
 
 export const Logout = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;

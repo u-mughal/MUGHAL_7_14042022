@@ -6,7 +6,6 @@ const db = new Sequelize('groupomania_db', 'root', '', {
     logging: false
 });
 
-
 (async () => { await db.sync(); })();
 
 export default db;
