@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -10,20 +10,18 @@ const Login = () => {
 
     const initialValues = {
         email: "",
-        password: "",
+        password: ""
     };
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email("Veuillez entrer une adresse email valide").required("Veuillez entrer votre adresse email"),
-        password: Yup.string().required("Veuillez entrer un mot de passe"),
-        confPassword: Yup.string().required("Veuillez confirmer votre mot de passe")
+        password: Yup.string().required("Veuillez entrer un mot de passe")
     });
 
     const onSubmit = async (data) => {
-        console.log(data);
         try {
-            await axios.post('http://localhost:5000/users', data);
-            navigate("/login", { replace: true });
+            await axios.post('http://localhost:5000/users/login', data);
+            navigate("/home", { replace: true });
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);
@@ -53,8 +51,7 @@ const Login = () => {
                                 </div>
                                 <ErrorMessage name="password" component="p" className="notification is-danger is-light p-2 mt-1" />
                             </div>
-                            <button type='submit' className="button is-link is-outlined mt-2">Se connecter</button>
-
+                            <button type='submit' className="button is-link is-outlined mt-2">Connexion</button>
                         </Form>
                     </Formik>
                 </div>

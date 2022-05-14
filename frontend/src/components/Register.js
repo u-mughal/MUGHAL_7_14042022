@@ -79,7 +79,7 @@ const Register = () => {
                                 </div>
                                 <ErrorMessage name="confPassword" component="p" className="notification is-danger is-light p-2 mt-1" />
                             </div>
-                            <button type='submit' className="button is-link is-outlined mt-2">inscription</button>
+                            <button type='submit' className="button is-link is-outlined mt-2">Inscription</button>
                         </Form>
                     </Formik>
                 </div>
