@@ -59,12 +59,12 @@ const Header = () => {
     return (
         <>
             <header>
-                <h1 className=""><img className='is-centered' src={isAdmin == 1 ? ("/assets/icon-left-font.svg") : ("/assets/icon-left-font-monochrome-black.svg")} width="200" alt="Groupomania" /></h1>
+                <h1 className=""><img className='is-centered' src={isAdmin === 1 ? ("/assets/icon-left-font.svg") : ("/assets/icon-left-font-monochrome-black.svg")} width="200" alt="Groupomania" /></h1>
                 <div className="tabs is-centered">
                     <ul>
                         <li>
                             <NavLink to="home" className={({ isActive }) => (isActive ?
-                                (isAdmin == 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin == 1 ? ('inactive-admin') : ('inactive')))}>
+                                (isAdmin === 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin === 1 ? ('inactive-admin') : ('inactive')))}>
                                 <span>Home</span>
                             </NavLink>
                         </li>
@@ -72,19 +72,19 @@ const Header = () => {
                             <NavLink to={'profile/' + myId}
                                 onClick={() => navigate(`/profile/${myId}`, { replace: true })}
                                 className={({ isActive }) => (isActive ?
-                                    (isAdmin == 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin == 1 ? ('inactive-admin') : ('inactive')))}>
+                                    (isAdmin === 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin === 1 ? ('inactive-admin') : ('inactive')))}>
                                 <span>Profil</span>
                             </NavLink>
                         </li>
                         <li>
                             <NavLink to="settings" className={({ isActive }) => (isActive ?
-                                (isAdmin == 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin == 1 ? ('inactive-admin') : ('inactive')))}>
+                                (isAdmin === 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin === 1 ? ('inactive-admin') : ('inactive')))}>
                                 <span>Éditer mon profil</span>
                             </NavLink>
                         </li>
                         <li>
                             <NavLink to="logout" className={({ isActive }) => (isActive ?
-                                (isAdmin == 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin == 1 ? ('inactive-admin') : ('inactive')))}>
+                                (isAdmin === 1 ? ('nav-active-admin') : ('nav-active')) : (isAdmin === 1 ? ('inactive-admin') : ('inactive')))}>
                                 <span>Se déconnecter</span>
                             </NavLink>
                         </li>
