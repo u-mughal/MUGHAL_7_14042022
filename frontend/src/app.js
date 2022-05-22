@@ -8,7 +8,7 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import Post from "./components/Post";
-import { BrowserRouter as Router, Routes, Route, Outlet, Navigate, } from "react-router-dom"; //, useParams
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate, useParams } from "react-router-dom"; //, useParams
 
 function Logout() {
     return (
