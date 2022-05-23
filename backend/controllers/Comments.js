@@ -14,7 +14,18 @@ export const getComByUser = async (req, res) => {
 }
 
 
-export const getComByPost = async (req, res) => { }
+export const getComByPost = async (req, res) => {
+    try {
+        const comments = await Comments.findAll({
+            include: [{ model: Users }],
+            where: { PostId: req.params.id },
+            order: [['createdAt', 'desc']]
+        });
+        res.json(comments);
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+}
 
 
 
