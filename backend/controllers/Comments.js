@@ -49,4 +49,16 @@ export const publishComment = async (req, res) => {
 }
 
 
-export const deleteComment = async (req, res) => { }
+export const deleteComment = async (req, res) => {
+    try {
+        const comId = req.params.id;
+        await Comments.destroy({
+            where: {
+                id: comId
+            }
+        });
+        res.json({ msg: "Publication supprimée!" });
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+}
