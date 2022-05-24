@@ -28,8 +28,25 @@ export const getComByPost = async (req, res) => {
 }
 
 
+export const publishComment = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
 
-export const publishComment = async (req, res) => { }
+    try {
+        const user = await Users.findAll({
+            where: { refresh_token: refreshToken }
+        });
+        const userId = user[0].id;
+        const comments = {
+            ...req.body,
+            userId: userId,
+            PostId: req.params.id
+        };
+        await Comments.create(comments);
+        res.json({ comments });
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+}
 
 
 export const deleteComment = async (req, res) => { }
