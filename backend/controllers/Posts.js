@@ -41,6 +41,23 @@ export const getAllPosts = async (req, res) => {
 }
 
 
-export const publishPost = async (req, res) => { }
+export const publishPost = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+
+    try {
+        const user = await Users.findAll({
+            where: { refresh_token: refreshToken }
+        });
+        const userId = user[0].id;
+        const post = {
+            ...req.body,
+            userId: userId
+        };
+        await Posts.create(post);
+        res.json({ msg: "Publication réussie!" });
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+}
 
 export const deletePost = async (req, res) => { }
