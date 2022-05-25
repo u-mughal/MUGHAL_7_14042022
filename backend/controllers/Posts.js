@@ -15,7 +15,17 @@ export const getAPost = async (req, res) => {
 }
 
 
-export const getMyPosts = async (req, res) => { }
+export const getMyPosts = async (req, res) => {
+    try {
+        const posts = await Posts.findAll({
+            include: [{ model: Users }, { model: Comments }],
+            where: { userId: req.params.id }
+        });
+        res.json(posts);
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+}
 
 
 
