@@ -28,8 +28,17 @@ export const getMyPosts = async (req, res) => {
 }
 
 
-
-export const getAllPosts = async (req, res) => { }
+export const getAllPosts = async (req, res) => {
+    try {
+        const posts = await Posts.findAll({
+            include: [{ model: Users }, { model: Comments }],
+            order: [['createdAt', 'desc']]
+        });
+        res.json(posts);
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+}
 
 
 export const publishPost = async (req, res) => { }
