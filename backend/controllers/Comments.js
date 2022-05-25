@@ -57,7 +57,7 @@ export const deleteComment = async (req, res) => {
                 id: comId
             }
         });
-        res.json({ msg: "Publication supprimée!" });
+        res.json({ msg: "Publication supprimée avec succès!" });
     } catch (error) {
         res.json({ msg: error.msg });
     }
