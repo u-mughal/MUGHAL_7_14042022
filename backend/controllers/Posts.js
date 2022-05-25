@@ -60,4 +60,17 @@ export const publishPost = async (req, res) => {
     }
 }
 
-export const deletePost = async (req, res) => { }
+export const deletePost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        await Posts.destroy({
+            where: {
+                id: postId
+            }
+        });
+        res.json({ msg: "Publication supprimée avec succès!" });
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+}
+
