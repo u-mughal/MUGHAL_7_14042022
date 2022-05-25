@@ -54,7 +54,7 @@ export const publishPost = async (req, res) => {
             userId: userId
         };
         await Posts.create(post);
-        res.json({ msg: "Publication réussie!" });
+        res.json({ msg: "Publication postée avec succès!" });
     } catch (error) {
         res.json({ msg: error.msg });
     }
