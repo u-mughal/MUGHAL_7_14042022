@@ -106,40 +106,126 @@ export const Logout = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("ID unknown : " + req.params.id);
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) return res.sendStatus(204);
 
   try {
-    await UserModel.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: {
-          bio: req.body.bio,
-        },
-      },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
+    const user = await Users.findAll({
+      where: { refresh_token: refreshToken },
+      include: [{ model: Posts }]
+    });
+    const userId = user[0].id;
+    const req_Id = req.params.id;
+
+    const emailExists = await Users.findOne({ where: { email: req.body.email } });
+    const emailExistsChck = await Users.findOne({ where: { email: req.body.email, id: userId } });
+    const nomExists = await Users.findOne({ where: { nom: req.body.nom, prenom: req.body.prenom } });
+    const nomExistsChck = await Users.findOne({ where: { nom: req.body.nom, prenom: req.body.prenom, id: userId } });
+
+    if (nomExists) {
+      if (!nomExistsChck) {
+        return res.status(400).json({ msg: "Quelqu'un avec le même prénom que toi possède déjà ce nom" });
       }
-    );
-  } catch (err) {
-    return res.status(500).json({ message: err });
+    }
+
+    if (emailExists) {
+      if (!emailExistsChck) {
+        return res.status(400).json({ msg: "Cette adresse email existe déjà" });
+      }
+    }
+
+    if (userId == req_Id) {
+
+      if (req.file) {
+        const userImgDel = user[0].userImg;
+        if (userImgDel != "128x128.png") {
+          fse.unlink(`../frontend/public/images/profilepictures/${userImgDel}`);
+        }
+      }
+
+      const userUp = req.file ?
+        {
+          ...req.body,
+          userImg: req.file.filename
+        } : {
+          ...req.body
+        };
+
+      await Users.update(userUp, {
+        where: { id: userId }
+      });
+
+      const postUp = req.file ?
+        {
+          nom: req.body.nom,
+          prenom: req.body.prenom,
+          email: req.body.email,
+          userImg: req.file.filename
+        } : {
+          nom: req.body.nom,
+          prenom: req.body.prenom,
+          email: req.body.email
+        };
+      await Posts.update(postUp, {
+        where: { userId: userId }
+      });
+
+      res.json({ msg: "Les informations de l'utilisateur ont bien été modifié" });
+    } else {
+      res.status(400).json({ msg: "Autorisation de modifier les informations de cet utilisateur refusée" });
+    }
+
+  } catch (error) {
+    res.json({ msg: error.msg });
   }
-};
+}
 
 
 export const deleteUser = async (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("ID unknown : " + req.params.id);
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) return res.sendStatus(204);
 
   try {
-    await UserModel.remove({ _id: req.params.id }).exec();
-    res.status(200).json({ message: "Compte supprimé avec succès! " });
-  } catch (err) {
-    return res.status(500).json({ message: err });
+    const user = await Users.findAll({
+      where: {
+        refresh_token: refreshToken
+      }
+    });
+
+    const isAdmin = user[0].isAdmin;
+    const userId = user[0].id;
+    const req_Id = req.params.id;
+
+    const userImgDel = await Users.findOne({ where: { id: req_Id } });
+
+    if (isAdmin == 1) {
+      await Users.destroy({
+        where: {
+          id: req_Id
+        }
+      });
+      if (userImgDel != "128x128.png") {
+        fse.unlink(`../frontend/public/images/profilepictures/${userImgDel[0].userImg}`);
+      }
+      res.json({ msg: "Utilisateur supprimé" });
+    } else if (userId == req_Id) {
+      await Users.destroy({
+        where: {
+          id: userId
+        }
+      });
+      if (userImgDel != "128x128.png") {
+        fse.unlink(`../frontend/public/images/profilepictures/${user[0].userImg}`);
+      }
+      res.json({ msg: "Utilisateur supprimé" });
+    } else {
+      res.status(400).json({ msg: "Autorisation de supprimer cet utilisateur refusée" });
+    }
+
+  } catch (error) {
+    res.json({ msg: error.msg });
   }
-};
+}
 
 
 const storage = multer.diskStorage({
