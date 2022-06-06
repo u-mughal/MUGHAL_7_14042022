@@ -73,4 +73,3 @@ export const deletePost = async (req, res) => {
         res.json({ msg: error.msg });
     }
 }
-
