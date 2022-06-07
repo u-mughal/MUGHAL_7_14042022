@@ -5,7 +5,7 @@ P7_Groupomania
 Lancer le terminal dans le dossier backend et effectuer ces commandes :
 ```
 npm install
-node server
+nodemon server
 ```
 
 ## FRONT END
